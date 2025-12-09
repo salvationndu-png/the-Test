@@ -26,24 +26,48 @@
   <main class="max-w-6xl mx-auto mt-8 px-4 pb-12">
     <div class="bg-white rounded-2xl shadow p-6 border border-slate-200">
 
-        @if(session('message'))
-        <div 
-            id="toast" 
-            class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity duration-500"
-        >
-            {{ session('message') }}
-        </div>
+      @if(session('message'))
+          <div 
+              id="toast" 
+              class="fixed top-5 right-5 bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg 
+                    flex items-start gap-3 animate-fadeIn"
+          >
+              <span>{{ session('message') }}</span>
 
-        <script>
-            const toast = document.getElementById('toast');
-            toast.classList.remove('opacity-0');
-            toast.classList.add('opacity-100');
+              <button 
+                  id="closeToast" 
+                  class="text-white font-bold ml-2"
+                  aria-label="Close"
+              >
+                  ✕
+              </button>
+          </div>
 
-            setTimeout(() => {
-            toast.classList.add('opacity-0');
-            }, 3000); 
-        </script>
-        @endif
+          <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                  const toast = document.getElementById('toast');
+                  const closeBtn = document.getElementById('closeToast');
+
+                  closeBtn.addEventListener('click', () => {
+                      toast.classList.add('opacity-0', 'scale-95');
+                      setTimeout(() => toast.remove(), 300);
+                  });
+              });
+          </script>
+
+          <style>
+              @keyframes fadeIn {
+                  from { opacity: 0; transform: translateY(10px); }
+                  to   { opacity: 1; transform: translateY(0); }
+              }
+
+              .animate-fadeIn {
+                  animation: fadeIn 0.4s ease-out forwards;
+              }
+          </style>
+      @endif
+
+
 
 
       <form method="POST" action="{{ route('store-result') }}">
@@ -93,3 +117,4 @@
   </main>
 </body>
 </html>
+
